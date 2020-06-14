@@ -47,4 +47,15 @@ class OnlineClassRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findExistingClasses()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->select('o.class')
+        ->orderBy('o.class','ASC');
+
+        return array_values(array_unique(array_column($qb->getQuery()->getResult(),'class')));
+
+    }
 }

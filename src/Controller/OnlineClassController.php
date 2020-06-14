@@ -13,6 +13,45 @@ use App\Repository\OnlineClassRepository;
 class OnlineClassController extends AbstractController
 {
     /**
+     * @Rest\Get("/api/advertisement")
+     */
+    public function sampleClassAction(Request $request, OnlineClassRepository $onlineClassRepository)
+    {   
+        //defaulting class to 1 in case parameter is not set
+        // $class = $request->query->get('class') ? $request->query->get('class') : 1 ;
+
+        $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true ],['id' => 'DESC'],1 ,0);        
+            
+        if($liveClassQuery)
+            $result = $liveClassQuery[0];
+        else
+            $result = null;
+
+        $response = [];
+
+        if($result)
+        {
+            // $response['live'] = $result;
+            $httpCode = Response::HTTP_OK;
+
+            $response['message'] = 'Class is live';
+            $response['title'] = $result->getName();
+            $response['youtubeUrl'] = $result->getVideoUrl();
+            $response['description'] = $result->getDescription();
+         
+        } else {
+            $httpCode = Response::HTTP_NO_CONTENT;
+            $response['message'] = 'No live class is going on. Try again later';
+            
+        }
+
+        return [
+            'code' => $httpCode,
+            'data' => $response
+        ];
+    }
+
+    /**
      * @Route("/test", name="online_class_test")
      */
     public function index()
@@ -23,21 +62,60 @@ class OnlineClassController extends AbstractController
     }
 
     /**
-     * @Rest\Get("/api/class")
+     * @Rest\Get("/api/class/{class}")
      */
-    public function listAction(Request $request, OnlineClassRepository $onlineClassRepository)
+    public function listAction(Request $request, OnlineClassRepository $onlineClassRepository,string $class = '')
+    {   
+        $response = [];
+
+        if($class)
+        {
+            $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);
+
+            if($liveClassQuery)
+                $liveVideo = $liveClassQuery[0];
+            else
+                $liveVideo = null;
+
+            if($liveVideo)
+            {
+                $response['live'] = $liveVideo;
+                $httpCode = Response::HTTP_OK;
+            
+            } else {
+                $response['live']['message'] = 'No live class is going on. Try again later';
+                $httpCode = Response::HTTP_NO_CONTENT;
+            }
+
+            $recordedClasses = $onlineClassRepository->findBy(
+                ['isListed' => true, 'isLive' => false, 'class' => $class],['id' => 'DESC']
+            );
+
+            $response['recorded'] = $recordedClasses;
+
+        } else {
+            $httpCode = Response::HTTP_MULTIPLE_CHOICES;
+            $response['classList'] = $onlineClassRepository->findExistingClasses();
+        }
+
+        return [
+            'code' => $httpCode,
+            'data' => $response
+        ];
+    }
+
+    /**
+     * @Rest\Get("/api/class/{class}/live-video")
+     */
+    public function liveVideoAction(Request $request, OnlineClassRepository $onlineClassRepository,string $class)
     {   
         //defaulting class to 1 in case parameter is not set
-        $class = $request->query->get('class') ? $request->query->get('class') : 1 ;
+        $class = $class ? $class : 1 ;
 
         if($class)
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);
         else
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true ],['id' => 'DESC'],1 ,0);
-        
-        $recordedClasses = $onlineClassRepository->findBy(
-            ['isListed' => true, 'isLive' => false, 'class' => $class],['id' => 'DESC']
-        );
             
         if($liveClassQuery)
             $result = $liveClassQuery[0];
@@ -46,25 +124,45 @@ class OnlineClassController extends AbstractController
 
         $response = [];
 
-        
-
         if($result)
         {
-            $response['live'] = $result;
+            $response = $result;
             $httpCode = Response::HTTP_OK;
-
-            // $response['message'] = 'Class is live';
-            // $response['title'] = $result->getName();
-            // $response['youtubeUrl'] = $result->getVideoUrl();
-            // $response['description'] = $result->getDescription();
-            // $response['class'] = $result->getClass();
          
         } else {
-            $response['live']['message'] = 'No live class is going on. Try again later';
+            $response['message'] = 'No live class is going on. Try again later';
             $httpCode = Response::HTTP_NO_CONTENT;
         }
 
-        $response['recorded'] = $recordedClasses;
+        return [
+            'code' => $httpCode,
+            'data' => $response
+        ];
+    }
+
+    /**
+     * @Rest\Get("/api/class/{class}/recorded-videos")
+     */
+    public function recordedVideosAction(Request $request, OnlineClassRepository $onlineClassRepository,string $class)
+    {   
+        //defaulting class to 1 in case parameter is not set
+        $class = $class ? $class : 1 ;
+        
+        $recordedClasses = $onlineClassRepository->findBy(
+            ['isListed' => true, 'isLive' => false, 'class' => $class],['id' => 'DESC']
+        );
+
+        $response = [];
+
+        if($recordedClasses)
+        {
+            $response = $recordedClasses;
+            $httpCode = Response::HTTP_OK;
+         
+        } else {
+            $response['message'] = 'No classes recorded yet';
+            $httpCode = Response::HTTP_NO_CONTENT;
+        }
 
         return [
             'code' => $httpCode,

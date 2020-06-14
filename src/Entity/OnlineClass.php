@@ -30,7 +30,7 @@ class OnlineClass
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $videoUrl;
+    private $videoURL;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -76,14 +76,14 @@ class OnlineClass
         return $this;
     }
 
-    public function getVideoUrl(): ?string
+    public function getVideoURL(): ?string
     {
-        return $this->videoUrl;
+        return $this->videoURL;
     }
 
-    public function setVideoUrl(?string $videoUrl): self
+    public function setVideoURL(?string $videoURL): self
     {
-        $this->videoUrl = $videoUrl;
+        $this->videoURL = $videoURL;
 
         return $this;
     }
