@@ -1,6 +1,13 @@
-#easy_admin:
-#    entities:
-#        # List the entity class name you want to manage
-#        - App\Entity\Product
-#        - App\Entity\Category
-#        - App\Entity\User
+easy_admin:
+  site_name: '<img src="/images/chmkms-logo.png" height="100px" />'
+  list: 
+    title: '%%entity_label%%'
+    actions: 
+        # - { name: 'show', icon: 'eye', label: ''}
+        # - { name: 'edit', icon: 'pencil', label: 'Edit'}
+        # - { name: 'delete', icon: 'trash', label: '' }
+        # - { name: 'search', icon: 'search', label: 'Search'}
+        # - { name: 'new', icon: 'plus-square', label: 'New'}
+  entities:
+    Classes:
+      class: App\Entity\OnlineClass
