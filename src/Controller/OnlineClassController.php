@@ -18,9 +18,12 @@ class OnlineClassController extends AbstractController
     public function sampleClassAction(Request $request, OnlineClassRepository $onlineClassRepository)
     {   
         //defaulting class to 1 in case parameter is not set
-        // $class = $request->query->get('class') ? $request->query->get('class') : 1 ;
+        $class = $request->query->get('class') ? $request->query->get('class') : 0 ;
 
-        $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true ],['id' => 'DESC'],1 ,0);        
+        if($class)
+            $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);        
+        else
+            $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true ],['id' => 'DESC'],1 ,0);        
             
         if($liveClassQuery)
             $result = $liveClassQuery[0];
@@ -52,7 +55,7 @@ class OnlineClassController extends AbstractController
     }
 
     /**
-     * @Route("/test", name="online_class_test")
+     * @Rest\Get("/test", name="online_class_test")
      */
     public function index()
     {
