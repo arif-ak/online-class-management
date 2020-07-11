@@ -4,6 +4,7 @@
 
 {% block body %}
 <style>
+    
 </style>
 
     {% for class in classes%}
@@ -78,7 +79,23 @@
             var image = $(e.relatedTarget).attr('src');
             console.log(image);
             $(".iframe-video").attr("src", image);
+            alignModal();
         });
+
+        $("#exampleModalCenter").on('hidden.bs.modal', function (e) {
+            $(".iframe-video").attr("src", '');
+        });
+
+        function alignModal(){
+            var modalDialog = $(this).find(".modal-dialog");
+            /* Applying the top margin on modal dialog to align it vertically center */
+            modalDialog.css("margin-top", Math.max(0, ($(window).height() - modalDialog.height()) / 2));
+        }
+
+        $(window).on("resize", function(){
+            $(".modal:visible").each(alignModal);
+        }); 
+          
     </script>
 
 {% endblock %}
