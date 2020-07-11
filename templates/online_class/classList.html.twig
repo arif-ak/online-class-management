@@ -4,7 +4,25 @@
 
 {% block body %}
 <style>
-    
+   .modal-content {
+        width:100%;
+    }
+
+    .modal-dialog-centered {
+        display:-webkit-box;
+        display:-ms-flexbox;
+        display:flex;
+        -webkit-box-align:center;
+        -ms-flex-align:center;
+        align-items:center;
+        min-height:calc(100% - (.5rem * 2));
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog-centered {
+            min-height:calc(100% - (1.75rem * 2));
+        }
+    }
 </style>
 
     {% for class in classes%}
@@ -42,10 +60,9 @@
 
     <!-- Button trigger modal -->
     
-
     <!--Modal: Name-->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal fade center" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
 
             <!--Content-->
             <div class="modal-content">
@@ -74,28 +91,21 @@
     <!--Modal: Name-->
 
     <script>
+        $(document).ready(function(){
 
-        $('#exampleModalCenter').on('show.bs.modal', function (e) {
-            var image = $(e.relatedTarget).attr('src');
-            console.log(image);
-            $(".iframe-video").attr("src", image);
-            alignModal();
+            $('#exampleModalCenter').on('show.bs.modal', function (e) {
+
+                var image = $(e.relatedTarget).attr('src');
+                $(".iframe-video").attr("src", image);
+                
+            });
+
+            $("#exampleModalCenter").on('hidden.bs.modal', function (e) {
+                $(".iframe-video").attr("src", '');
+            });
+
         });
 
-        $("#exampleModalCenter").on('hidden.bs.modal', function (e) {
-            $(".iframe-video").attr("src", '');
-        });
-
-        function alignModal(){
-            var modalDialog = $(this).find(".modal-dialog");
-            /* Applying the top margin on modal dialog to align it vertically center */
-            modalDialog.css("margin-top", Math.max(0, ($(window).height() - modalDialog.height()) / 2));
-        }
-
-        $(window).on("resize", function(){
-            $(".modal:visible").each(alignModal);
-        }); 
-          
     </script>
 
 {% endblock %}
