@@ -19,7 +19,9 @@ class OnlineClassController extends AbstractController
     {   
         $class = $request->query->get('class') ? $request->query->get('class') : null ;
 
-        if($class){
+        //school web app query :start
+
+        /* if($class){
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);        
         }
         else
@@ -28,8 +30,14 @@ class OnlineClassController extends AbstractController
         if($liveClassQuery)
             $result = $liveClassQuery[0];
         else
-            $result = null;
+            $result = null; */
 
+        //school web app query : end
+
+        $resultArray = $class ? $onlineClassRepository->findBy(['isListed' => true,'id' => $class ],['id' => 'DESC'],1 ,0) : 
+                                $onlineClassRepository->findBy(['isListed' => true],['id' => 'DESC'],1,0);
+
+        $result = $resultArray ? $resultArray[0] : null;
         $response = [];
 
         if($result)

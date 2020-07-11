@@ -1,19 +1,29 @@
 easy_admin:
-  site_name: '<img src="/images/chmkms-logo.png" height="100px" />'
+  site_name: '<img src="/images/sugarcube-transparent.png" height="100px" />'
+  # site_name : 'sugarcube'
   list: 
     title: '%%entity_label%%'
     actions: 
-        # - { name: 'show', icon: 'eye', label: ''}
-        # - { name: 'edit', icon: 'pencil', label: 'Edit'}
+        - { name: 'show', label: 'Show'}
+        # - { name: 'edit', label: 'Edit'}
         # - { name: 'delete', icon: 'trash', label: '' }
-        # - { name: 'search', icon: 'search', label: 'Search'}
-        # - { name: 'new', icon: 'plus-square', label: 'New'}
+        # - { name: 'new', icon: 'plus-square', label: 'New Media'}
   entities:
     Classes:
       class: App\Entity\OnlineClass
       label: 'Media'
       list:
-        fields: ['id','name','description','videoURL','isLive','isListed','videoLength','voiceType']
+        fields: ['id',{property: 'name', label: 'Media title'},'description',{property : 'videoURL', label: 'Source URL'},
+                'isListed','videoLength','voiceType']
+      show:
+        fields: ['id',{property: 'name', label: 'Media title'},'description',{property : 'videoURL', label: 'Source URL'},
+                'videoLength','voiceType','isListed']
+      edit:
+        fields: [{property: 'name', label: 'Media title'},'description',{property : 'videoURL', label: 'Source URL'},
+                'videoLength','voiceType','isListed']
+      new:
+        fields: [{property: 'name', label: 'Media title'},'description',{property : 'videoURL', label: 'Source URL'},
+                'videoLength','voiceType','isListed']
     # Class_12:
     #   class: App\Entity\OnlineClass
     #   label: 'Class 12'

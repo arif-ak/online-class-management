@@ -25,7 +25,7 @@
     }
 </style>
 
-    {% for class in classes%}
+    {% for class in classes %}
 
         <div class="card m-1 p-1">
             <div class="row no-gutters">
@@ -39,23 +39,16 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">{{ class.description }}</p>
-                        <button src="//chmkms.surge.sh?class={{ class.class }}" type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                        <button src="//chmkms.surge.sh?class={{ class.id }}" type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
                             PLAY
                         </button>
-                        <a class="btn btn-sm btn-dark" href="//chmkms.surge.sh?class={{ class.class }}" target="_blank">PLAY IN ANOTHER TAB</a>
+                        <a class="btn btn-sm btn-dark" href="//chmkms.surge.sh?class={{ class.id }}" target="_blank">PLAY IN ANOTHER TAB</a>
                         
                     </div>
                 </div>
             </div>
         </div>
 
-        {# <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="//chmkms.surge.sh?class={{ class.class }}"></iframe>
-        </div> #}
-
-        
-
-        
     {% endfor %}
 
     <!-- Button trigger modal -->
