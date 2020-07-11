@@ -17,11 +17,11 @@ class OnlineClassController extends AbstractController
      */
     public function sampleClassAction(Request $request, OnlineClassRepository $onlineClassRepository)
     {   
-        //defaulting class to 1 in case parameter is not set
-        $class = $request->query->get('class') ? $request->query->get('class') : 0 ;
+        $class = $request->query->get('class') ? $request->query->get('class') : null ;
 
-        if($class)
+        if($class){
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);        
+        }
         else
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true ],['id' => 'DESC'],1 ,0);        
             
@@ -55,12 +55,14 @@ class OnlineClassController extends AbstractController
     }
 
     /**
-     * @Rest\Get("/test", name="online_class_test")
+     * @Route("/sugarcube", name="online_class_test")
      */
-    public function index()
+    public function index(OnlineClassRepository $onlineClassRepository)
     {
-        return $this->render('online_class/index.html.twig', [
-            'controller_name' => 'OnlineClassController',
+        $videosList = $onlineClassRepository->findVideosList();
+
+        return $this->render('online_class/classList.html.twig', [
+            'classes' => $videosList,
         ]);
     }
 
@@ -71,7 +73,7 @@ class OnlineClassController extends AbstractController
     {   
         $response = [];
 
-        if($class)
+        if($class) 
         {
             $liveClassQuery = $onlineClassRepository->findBy(['isLive' => true,'class' => $class ],['id' => 'DESC'],1 ,0);
 

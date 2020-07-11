@@ -47,6 +47,16 @@ class OnlineClass
      */
     private $isListed;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $videoLength;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $voiceType;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +130,30 @@ class OnlineClass
     public function setIsListed(?bool $isListed): self
     {
         $this->isListed = $isListed;
+
+        return $this;
+    }
+
+    public function getVideoLength(): ?int
+    {
+        return $this->videoLength;
+    }
+
+    public function setVideoLength(?int $videoLength): self
+    {
+        $this->videoLength = $videoLength;
+
+        return $this;
+    }
+
+    public function getVoiceType(): ?string
+    {
+        return $this->voiceType;
+    }
+
+    public function setVoiceType(?string $voiceType): self
+    {
+        $this->voiceType = $voiceType;
 
         return $this;
     }

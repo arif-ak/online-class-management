@@ -56,6 +56,20 @@ class OnlineClassRepository extends ServiceEntityRepository
         ->orderBy('o.class','ASC');
 
         return array_values(array_unique(array_column($qb->getQuery()->getResult(),'class')));
+    }
 
+    public function findVideosList()
+    {
+        $qb =  $this->createQueryBuilder('o');
+            // ->andWhere('o.exampleField = :val')
+            
+        $qb 
+            ->where('o.isListed = :listingStatus')
+            ->setParameter('listingStatus', true)
+            // ->groupBy('o.isLive')
+            ->orderBy('o.id', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }

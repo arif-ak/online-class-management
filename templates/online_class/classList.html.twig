@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meditation {% endblock %}
+
+{% block body %}
+<style>
+</style>
+
+    {% for class in classes%}
+
+        <div class="card m-1 p-1">
+            <div class="row no-gutters">
+                <div class="col-sm-5 col-lg-3">
+                <img src="https://cdn.mindful.org/focus3.png?q=80&fm=jpg&fit=crop&w=1920&h=1080" class="card-img" alt="...">
+                </div>
+                <div class="col-sm-7 col-lg-9">
+                    <div class="card-header bg-white">
+                        <h6> Card title </h6>
+                        <small class="text-muted">{{ class.videoLength | default(0) }} mins * {{ class.voiceType | default('Automated') }} Voice </small>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ class.description }}</p>
+                        <button src="//chmkms.surge.sh?class={{ class.class }}" type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                            PLAY
+                        </button>
+                        <a class="btn btn-sm btn-dark" href="//chmkms.surge.sh?class={{ class.class }}" target="_blank">PLAY IN ANOTHER TAB</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="//chmkms.surge.sh?class={{ class.class }}"></iframe>
+        </div> #}
+
+        
+
+        
+    {% endfor %}
+
+    <!-- Button trigger modal -->
+    
+
+    <!--Modal: Name-->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+            
+            <!--Body-->
+            <div class="modal-body mb-0 p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                    <iframe class="embed-responsive-item iframe-video" src=""></iframe>
+                </div>
+
+            </div>
+
+            <!--Footer-->
+            {# <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+            </div> #}
+
+            </div>
+            <!--/.Content-->
+
+        </div>
+        </div>
+    <!--Modal: Name-->
+
+    <script>
+
+        $('#exampleModalCenter').on('show.bs.modal', function (e) {
+            var image = $(e.relatedTarget).attr('src');
+            console.log(image);
+            $(".iframe-video").attr("src", image);
+        });
+    </script>
+
+{% endblock %}
+
